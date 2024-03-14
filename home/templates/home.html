@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% block start %} {% load static%}
+<style>
+  .hero {
+    background-color: #edf6f9;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .optima {
+    color: #83c5be;
+    font-size: 8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  .tagline {
+    font-size: 2.4rem;
+    text-align: left;
+    color: #343a40;
+  }
+</style>
+
+<div class="container-fluid hero">
+  <h1 class="optima">OPTIMA</h1>
+  <h4 class="tagline">Backend Training</h4>
+</div>
+
+{%endblock%}
