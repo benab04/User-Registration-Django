@@ -23,6 +23,9 @@
         font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
         font-weight: 700;
       }
+      .navbar-brand:hover {
+        color: #034a51;
+      }
       .login-btn {
         background-color: #006d77;
         color: #fdfbf6;
@@ -36,11 +39,15 @@
     </style>
     <nav class="navbar bg-transparent text-body shadow-lg p-2">
       <div class="container-fluid bg-transparent text-body">
-        <a class="navbar-brand">Django</a>
+        <a class="navbar-brand" href="/">Django</a>
         {% if request.user.is_authenticated %}
         <a href="/logout/" class="login-btn" type="submit">Logout</a>
         {% else %}
-        <a href="/login/" class="login-btn" type="submit">Login</a>
+        <div>
+          <a href="/login/" class="login-btn" type="submit">Login</a>
+          <a href="/register/" class="login-btn" type="submit">Register</a>
+        </div>
+
         {% endif %}
       </div>
     </nav>
