@@ -43,9 +43,9 @@ The data is stored in MongoDB using djongo engine.
    echo "VARIABLE_NAME=value" > .env
     ```
     The required variables for this project are :
-   a. DATABASE_URL
-   b. SECRET_KEY
-   c. DEBUG
+   1. DATABASE_URL
+   2. SECRET_KEY
+   3. DEBUG
 9. Now, you are officially ready to start the server. For that, run:
     ```python
     python manage.py runserver
