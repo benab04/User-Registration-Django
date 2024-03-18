@@ -5,7 +5,7 @@
       {% csrf_token %}
       <h3 class="mb-4">Login</h3>
       {% if messages %}
-      <div class="alert alert-primary" role="alert">
+      <div class="alert alert-danger" role="alert">
         {% for message in messages %} {{ message }} {% endfor %}
       </div>
       {% endif %}
@@ -39,4 +39,10 @@
     </p>
   </div>
 </div>
+<script>
+  {% for message in messages %}
+  alert("{{ message }}");
+  {% endfor %}
+</script>
+
 {% endblock %}

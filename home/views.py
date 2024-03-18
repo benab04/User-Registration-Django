@@ -64,9 +64,11 @@ def login_page(request):
             password = serializer.validated_data['password']
             user=User.objects.filter(username=username).first()
             if user is None:
-                return HttpResponse("User not found") 
-            if not user.check_password(password):
-                return HttpResponse("Incorrect Password")
+                messages.error(request, "User is not registered")
+                return redirect('/register/')
+            if not user.check_password(password) and user is not None:
+                messages.error(request, "Incorrect password")
+                return render(request, 'login.html')
             user_data = {
                 'username': user.username,
                 'email': user.email,
