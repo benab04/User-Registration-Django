@@ -49,4 +49,5 @@ The data is stored in MongoDB using djongo engine.
     ```python
     python manage.py runserver
     ```
+    If errors are showing, delete the .env file and create it manually in the code editor. Rerun the server.
     Copy the link show in the terminal and paste it in you browser. The django app should be running, displaying the home page.
