@@ -45,7 +45,6 @@ The data is stored in MongoDB using djongo engine.
     The required variables for this project are :
    1. DATABASE_URL
    2. SECRET_KEY
-   3. DEBUG
 9. Now, you are officially ready to start the server. For that, run:
     ```python
     python manage.py runserver
