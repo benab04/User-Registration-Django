@@ -35,6 +35,7 @@
 <div class="container-fluid hero">
   {% if user_data %}
   <div class="container details-div">
+    <h2 class="my-3">User Details</h2>
     <table class="table table table-success table-striped">
       <thead>
         <tr>
@@ -63,6 +64,11 @@
               >Click here to view submission</a
             >
           </td>
+        </tr>
+        {%else%}
+        <tr>
+          <th scope="col">Submission Status</th>
+          <td>Not Submitted</td>
         </tr>
         {%endif%}
       </tbody>
@@ -98,5 +104,10 @@
   <h4 class="tagline">Backend Training</h4>
   {%endif%}
 </div>
+<script>
+  {% for message in messages %}
+  alert("{{ message }}");
+  {% endfor %}
+</script>
 
 {%endblock%}

@@ -28,6 +28,7 @@ def home(request):
                 'custom_id':user.custom_id,
                 'submission_link':user.submission_link
                 }
+                messages.info(request,"Submission Link added")
                 # You can optionally return a success message or redirect the user
                 return render(request, 'home.html', {'user_data': user_data})
 
