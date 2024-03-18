@@ -26,14 +26,14 @@ def home(request):
                 'username': user.username,
                 'email': user.email,
                 'custom_id':user.custom_id,
-                'submission_link':user.submission_link
+                'submission_link':user.submission_link,
+                'first_name':user.first_name,
+                'last_name':user.last_name
                 }
                 messages.info(request,"Submission Link added")
-                # You can optionally return a success message or redirect the user
                 return render(request, 'home.html', {'user_data': user_data})
 
             except User.DoesNotExist:
-                # Handle case where user with the given custom_id does not exist
                 return HttpResponse("User not found")
     custom_id = request.COOKIES.get('custom_id')
     user_data = None
@@ -44,8 +44,10 @@ def home(request):
                 'username': user.username,
                 'email': user.email,
                 'custom_id':user.custom_id,
-                'submission_link':user.submission_link
-            }
+                'submission_link':user.submission_link,
+                'first_name':user.first_name,
+                'last_name':user.last_name
+                }
             print(user_data)
         except User.DoesNotExist:
             # Handle case where user with the given custom_id does not exist
@@ -72,19 +74,18 @@ def login_page(request):
             user_data = {
                 'username': user.username,
                 'email': user.email,
-                    # Add other user fields here if needed
-            }
+                'custom_id':user.custom_id,
+                'submission_link':user.submission_link,
+                'first_name':user.first_name,
+                'last_name':user.last_name
+                }
             print(user_data)
             if user is not None:
-                # If user authentication is successful, redirect to some other page
                 response = redirect('/')
                 response.set_cookie(key='custom_id', value=user.custom_id, httponly=True)
                 
                 return response
-                # return render(request, 'login.html', context=user_data)
-                # return redirect('/', context=user_data)
             else:
-                # If user authentication fails, render login template with error message
                 return render(request, 'login.html', {'error_message': 'Invalid credentials'})
 
     else:
@@ -140,7 +141,6 @@ def register_page(request):
         username = data.get('username')
         email = data.get('email')
 
-        # Check if the username or email already exists in the database
         user_with_username = User.objects.filter(username=username).first()
         user_with_email = User.objects.filter(email=email).first()
 
