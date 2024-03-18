@@ -24,12 +24,79 @@
     text-align: left;
     color: #343a40;
   }
+  .table-hd {
+    color: #034a51 !important;
+  }
+  .details-div {
+    max-width: 1000px;
+  }
 </style>
 
 <div class="container-fluid hero">
+  {% if user_data %}
+  <div class="container details-div">
+    <table class="table table table-success table-striped">
+      <thead>
+        <tr>
+          <th class="table-hd" scope="col">Title</th>
+          <th class="table-hd" scope="col">Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="col">Username</th>
+          <td>{{user_data.username}}</td>
+        </tr>
+        <tr>
+          <th scope="col">User ID</th>
+          <td>{{user_data.custom_id}}</td>
+        </tr>
+        <tr>
+          <th scope="col">Email</th>
+          <td>{{user_data.email}}</td>
+        </tr>
+        {%if user_data.submission_link != "null"%}
+        <tr>
+          <th scope="col">Submission Link</th>
+          <td>
+            <a target="_blank" href="{{user_data.submission_link}}"
+              >Click here to view submission</a
+            >
+          </td>
+        </tr>
+        {%endif%}
+      </tbody>
+    </table>
+    {%if user_data.submission_link == "null"%}
+    <div>
+      <form method="POST">
+        {%csrf_token%}
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label"
+            >Enter Submission Link</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            name="submission_link"
+          />
+          <div id="emailHelp" class="form-text">
+            Submit the google drive link of your deliverables
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit Link</button>
+      </form>
+    </div>
+
+    {%endif%}
+  </div>
+  {% else %}
   <h1 class="optima">OPTIMA</h1>
   <h4 class="tagline">Backend Training</h4>
-  <h1>{{user_data.username}}</h1>
+  {%endif%}
 </div>
 
 {%endblock%}

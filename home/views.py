@@ -6,13 +6,34 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import AuthenticationFailed
-from django.views.decorators.csrf import csrf_exempt
-import random
-import string
 from django.contrib import messages
 # Create your views here.
+
 from .serializer import *
 def home(request):
+    if(request.method =="POST"):
+        data=request.POST
+        print(data)
+        custom_id = request.COOKIES.get('custom_id')
+        if custom_id:
+            try:
+                user = User.objects.get(custom_id=custom_id)
+                submission_link = data.get('submission_link')
+                # Update the submission_link for the user
+                user.submission_link = submission_link
+                user.save()
+                user_data = {
+                'username': user.username,
+                'email': user.email,
+                'custom_id':user.custom_id,
+                'submission_link':user.submission_link
+                }
+                # You can optionally return a success message or redirect the user
+                return render(request, 'home.html', {'user_data': user_data})
+
+            except User.DoesNotExist:
+                # Handle case where user with the given custom_id does not exist
+                return HttpResponse("User not found")
     custom_id = request.COOKIES.get('custom_id')
     user_data = None
     if custom_id:
@@ -21,7 +42,8 @@ def home(request):
             user_data = {
                 'username': user.username,
                 'email': user.email,
-                # Add other user fields here if needed
+                'custom_id':user.custom_id,
+                'submission_link':user.submission_link
             }
             print(user_data)
         except User.DoesNotExist:
@@ -30,12 +52,6 @@ def home(request):
 
     return render(request, 'home.html', {'user_data': user_data})
 
-# def login_page(request):
-#     return render(request, 'login.html')
-
-
-def register_page(request):
-    return render(request, 'register.html')
 
 # @csrf_exempt
 def login_page(request):
@@ -56,7 +72,6 @@ def login_page(request):
                     # Add other user fields here if needed
             }
             print(user_data)
-            # return Response(user_data)
             if user is not None:
                 # If user authentication is successful, redirect to some other page
                 response = redirect('/')
@@ -76,54 +91,64 @@ def login_page(request):
 
 
 
-class LoginAPI(APIView):
+# class LoginAPI(APIView):
     
-    def post(self, request):
-        try:
-            data=request.data
-            print(data)
-            serializer = LoginSerializer(data=data)
-            if serializer.is_valid():
-                print(serializer.data)
-                username=serializer.data['username']
-                password=serializer.data['password']
+#     def post(self, request):
+#         try:
+#             data=request.data
+#             print(data)
+#             serializer = LoginSerializer(data=data)
+#             if serializer.is_valid():
+#                 print(serializer.data)
+#                 username=serializer.data['username']
+#                 password=serializer.data['password']
                 
-                user=User.objects.filter(username=username).first()
-                print(user)
-                if user is None:
-                    return HttpResponse("User not found") 
-                if not user.check_password(password):
-                    return HttpResponse("Incorrect Password")
-                user_data = {
-                    'username': user.username,
-                    'email': user.email,
-                    # Add other user fields here if needed
-                }
-                return Response(user_data)
-        except Exception as e:
-            print(e)
+#                 user=User.objects.filter(username=username).first()
+#                 print(user)
+#                 if user is None:
+#                     return HttpResponse("User not found") 
+#                 if not user.check_password(password):
+#                     return HttpResponse("Incorrect Password")
+#                 user_data = {
+#                     'username': user.username,
+#                     'email': user.email,
+#                     # Add other user fields here if needed
+#                 }
+#                 return Response(user_data)
+#         except Exception as e:
+#             print(e)
             
             
-class RegisterView(APIView):
-    def post(self, request):
-        try:
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid():
+# class RegisterView(APIView):
+#     def post(self, request):
+#         try:
+#             serializer = UserSerializer(data=request.data)
+#             if serializer.is_valid():
                 
-                serializer.save()
-                return Response(serializer.data, status=201)  # Return created user data
-            return Response(serializer.errors, status=400)  # Return validation errors
-        except Exception as e:
-            print(e)
-    
-    
-
-# from .forms import UserForm
+#                 serializer.save()
+#                 return Response(serializer.data, status=201)  # Return created user data
+#             return Response(serializer.errors, status=400)  # Return validation errors
+#         except Exception as e:
+#             print(e)
 
 def register_page(request):
     if request.method == 'POST':
         data = request.POST
-        print(data)
+        username = data.get('username')
+        email = data.get('email')
+
+        # Check if the username or email already exists in the database
+        user_with_username = User.objects.filter(username=username).first()
+        user_with_email = User.objects.filter(email=email).first()
+
+        if user_with_username:
+            messages.error(request, "Username already taken")
+            return render(request, 'register.html')
+
+        if user_with_email:
+            messages.error(request, "Account with given email exists. Go to Login")
+            return render(request, 'register.html')
+
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -133,33 +158,7 @@ def register_page(request):
             return render(request,'register.html' )
     else:
         return render(request, 'register.html')
-    # serializer = LoginSerializer(data=data)
-    #         if serializer.is_valid():
-    #             username=serializer.data['username']
-    #             password=serializer.data['password']
-                
-    #             user=authenticate(email=username, password=password)
-                
-    #             if user is None:
-    #                 return Response({
-    #                 'status':404,
-    #                 'message':'Invalid Password',
-    #                 'data': {}
-    #             })
-                
-    #             refresh = RefreshToken.for_user(user)
-
-    #             return Response({
-    #                 'refresh': str(refresh),
-    #                 'access': str(refresh.access_token),
-    #             })
-                
-    #         return Response({
-    #             'status':400,
-    #             'message':'Something went wrong',
-    #             'data': serializer.errors
-    #         })
-    
+   
     
 def logout_page(request):
     # Delete the custom_id cookie to log the user out

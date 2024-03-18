@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
             prefix_length = len(prefix)
             
             # Generate 8 random digits
-            digits = ''.join(random.choices(string.digits, k=8))
+            digits = ''.join(random.choices(string.digits, k=15))
             
             # Concatenate prefix and digits
             custom_id = prefix + digits
