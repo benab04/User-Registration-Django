@@ -40,7 +40,7 @@ The data is stored in MongoDB using djongo engine.
    ```
 8. Manually enter the variables in the .env file using any code editor or run:
     ```python
-   echo "VARIABLE_NAME=value" > .env
+   echo "VARIABLE_NAME=value" >> .env
     ```
     The required variables for this project are :
    1. DATABASE_URL
