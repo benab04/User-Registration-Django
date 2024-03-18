@@ -8,7 +8,7 @@ The data is stored in MongoDB using djongo engine.
 ## Installation instructions:
 
 1. Open a new terminal in a new folder and run the following command:
- ```git
+ ```bash
    git clone https://github.com/benab04/User-Registration-Django.git
 ```
 3. Make sure than pip is installed on your device and the environment is set up.
