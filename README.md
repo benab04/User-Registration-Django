@@ -39,15 +39,15 @@ The data is stored in MongoDB using djongo engine.
    touch .env
    ```
 8. Manually enter the variables in the .env file using any code editor or run:
-    ```python
+   ```python
    echo "VARIABLE_NAME=value" >> .env
-    ```
-    The required variables for this project are :
+   ```
+   The required variables for this project are :
    1. DATABASE_URL
    2. SECRET_KEY
 9. Now, you are officially ready to start the server. For that, run:
-    ```python
-    python manage.py runserver
-    ```
-    If errors are showing, delete the .env file and create it manually in the code editor. Rerun the server.
-    Copy the link show in the terminal and paste it in you browser. The django app should be running, displaying the home page.
+   ```python
+   python manage.py runserver
+   ```
+   If errors are showing, delete the .env file and create it manually in the code editor. Rerun the server.
+   Copy the link show in the terminal and paste it in you browser. The django app should be running, displaying the home page.
